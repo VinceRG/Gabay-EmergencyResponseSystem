@@ -1,0 +1,422 @@
+/* Integrated NEA Styles */
+.nea {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap; 
+  max-width: 1500px;
+  box-shadow: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: beige;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.nea-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: beige;
+}
+
+.nea-text {
+  width: 100%;
+}
+
+.nea-text h1 {
+  font-size: 40px;
+  font-weight: 650;
+  color: #BE3D2A;
+  letter-spacing: 1px;
+  margin-left: 0;
+}
+
+.nea-text h5 {
+  font-size: 0.938rem;
+  color: #e25e3e;
+  margin: 0.5rem 0 1.4rem;
+  text-align: justify;
+}
+
+/* New layout for address input and update button */
+.address-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+#address-input-container {
+  flex: 1;
+}
+
+#address-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #FFF1D5;
+  margin-top: 10px;
+}
+
+#changeAddressBtn {
+  background-color: #ff9b50;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  height: 45px;
+  margin-top: 10px;
+}
+
+#changeAddressBtn:hover {
+  background-color: #e68a44;
+}
+
+/* Find emergency button styles */
+.find-emergency-container {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.find-btn {
+  background: linear-gradient(to right, #BE3D2A, #ff9b50);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.find-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.find-btn i {
+  font-size: 18px;
+}
+
+/* Map container */
+#map {
+  width: 100%;
+  height: 500px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Radio buttons as filter buttons */
+.location-source-buttons {
+  display: absolute;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#results-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 80%;
+  margin: 0 auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#results-container h2 {
+  margin-bottom: 25px;
+  color: #BE3D2A;
+  text-align: center;
+}
+
+.facility-category {
+  margin-bottom: 25px;
+}
+
+.facility-category h3 {
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.facility-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.facility-card {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.facility-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.facility-name {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #BE3D2A;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #f5f5f5;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.facility-address,
+.facility-contact,
+.facility-distance {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.facility-distance {
+  font-weight: 600;
+  color: #BE3D2A;
+}
+
+.direction-link {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  color: #BE3D2A;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.direction-link:hover {
+  text-decoration: underline;
+}
+
+.filter-controls {
+  margin: 15px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.filter-btn.active {
+  background-color: #BE3D2A;
+  color: white;
+  border-color: #db8234;
+}
+
+.filter-btn:hover:not(.active) {
+  background-color: #f5f5f5;
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 20px;
+  display: none;
+}
+
+.loading-indicator.visible {
+  display: block;
+}
+
+.loader {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 3px solid #BE3D2A;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Modal styles */
+#changeAddressModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#changeAddressModal.show {
+  display: flex;
+  opacity: 1;
+}
+
+#changeAddressModal .modal-content {
+  background: #fff;
+  padding: 25px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 15px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+#changeAddressModal h3 {
+  color: #BE3D2A;
+  margin-bottom: 20px;
+}
+
+#changeAddressModal button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#changeAddressModal button[type="submit"] {
+  background-color: #fd784f;
+  color: white;
+}
+
+#changeAddressModal button[type="submit"]:hover {
+  background-color: #ff6f00;
+}
+
+#changeAddressModal button[type="button"] {
+  background-color: #555;
+  color: white;
+}
+
+#changeAddressModal button[type="button"]:hover {
+  background-color: #333;
+}
+
+.user-profile {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-avatar {
+  font-size: 2.5rem;
+  color: #3498db;
+}
+
+.user-details {
+  line-height: 1.4;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.user-email {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.legend {
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .address-container {
+    flex-direction: column;
+  }
+  
+  #changeAddressBtn {
+    width: 100%;
+  }
+  
+  .filter-btn {
+    font-size: 12px;
+    padding: 8px 15px;
+  }
+  
+  .facility-list {
+    grid-template-columns: 1fr;
+  }
+
+  .input-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-controls {
+    justify-content: center;
+  }
+}

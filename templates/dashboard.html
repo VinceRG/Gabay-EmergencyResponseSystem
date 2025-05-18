@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GABAY - Emergency Response System</title>
+    
+    <!-- External dependencies -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.7.2/prop-types.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.12/Recharts.js"></script>
+    <script src="https://unpkg.com/papaparse@5.3.0/papaparse.min.js"></script>
+    
+    <!-- Tailwind CSS for React components -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Box icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+    <div class="full-page"></div>
+
+    <!-- Header Area -->
+    <header style="display: flex; align-items: center; background: linear-gradient(390deg, #F39E60, #E16A54); padding: 10px 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); height: 60px;">
+      <a href="{{ url_for('chatbot_ui') }}" style="text-decoration: none; display: flex; align-items: center; color: white; font-weight: 500;"><i class='bx bx-arrow-back' style="color: white; font-size: 24px; margin-right: 10px; font-weight: 500;"></i>Back</a>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title"><b>Emergency Dashboard</b></h1>
+                <div class="dashboard-actions">
+                   
+                </div>
+            </div>
+            
+            <!-- Tab Content Containers -->
+            <div class="emergency-tab-content">
+                <div id="dashboard-root"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="pageOverlay"></div>
+
+    <!-- Chatbot Button -->
+    <div class="chatbot-button">
+        <i class='bx bx-message-rounded-dots'></i>
+    </div>
+
+    <!-- External JS file with React components -->
+    <script type="text/babel" src="{{ url_for('static', filename='dashboard.js') }}"></script>
+
+    <script>
+        // Chatbot button functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotButton = document.querySelector('.chatbot-button');
+            
+            // Chatbot functionality (placeholder)
+            if (chatbotButton) {
+                chatbotButton.addEventListener('click', function() {
+                    alert('GABAY Chatbot will be available here. This feature will provide real-time emergency assistance.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gabay Disaster Assistant</title>
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='nea.css') }}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ <style>
+   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+*{
+    font-family: 'DM Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-padding-top: 4rem;
+    scroll-behavior: smooth;
+    list-style: none;
+    text-decoration: none;
+}  
+.chatbot-section {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap; 
+  max-width: 1500px;
+  box-shadow: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: beige;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  margin-top:30px;
+}
+  .chatbot-container {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 600px;
+    border-right: 1px solid #e0e0e0;
+    margin-top: 10px;
+  }
+  .chat-text h1 {
+  display: block;
+  font-size: 40px;
+  font-weight: 650;
+  color: #BE3D2A;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  width: 100%;
+  clear: both;
+}
+  
+.chat-header {
+  background-color: #BE3D2A;
+  color: white;
+  border-radius: 20px 0 0 0;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.chat-header i {
+  margin-right: 10px;
+  font-size: 20px;
+}
+  
+  .chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+  }
+  
+  .message {
+    margin-bottom: 15px;
+    max-width: 80%;
+    position: relative;
+  }
+  
+  .user-message {
+    margin-left: auto;
+    background-color:#BE3D2A;
+    color: white;
+    border-radius: 18px 18px 0 18px;
+    padding: 10px 15px;
+  }
+  
+  .bot-message {
+    background-color: #e9e9eb;
+    color: #333;
+    border-radius: 18px 18px 18px 0;
+    padding: 20px;
+    padding-left: 25px;
+  }
+  
+  .timestamp {
+    font-size: 10px;
+    margin-top: 5px;
+    opacity: 0.7;
+    text-align: right;
+  }
+  
+  .chat-input {
+  display: flex;
+  padding: 15px;
+  background-color: wheat;
+  border-top: 1px solid #e0e0e0;
+  border-radius: 0 0 0px 20px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+.send-btn {
+  background-color: #fd784f;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.send-btn:hover {
+  background-color: #e64a19;
+}
+
+  .chat-info {
+  width: 35%;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.chat-info h3 {
+  color: #BE3D2A;
+  margin-top: 0;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
+}
+
+.info-item {
+  margin-bottom: 20px;
+}
+
+.info-item h4 {
+  display: flex;
+  margin-top: 1.5rem;
+  align-items: center;
+  color: #555;
+}
+
+.info-item h4 i {
+  margin-right: 8px;
+  color: #ff5722;
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.quick-action {
+  background-color: #f0f2f5;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+  font-size: 0.80rem;
+}
+
+.quick-action:hover {
+  background-color: #e0e0e0;
+}
+  
+  #weatherInfo {
+    background-color: #f0f8ff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 768px) {
+    .chatbot-section {
+      flex-direction: column;
+      height: auto;
+      margin: 0 auto;
+    }
+    
+    .chatbot-container, .chat-info {
+      width: 100%;
+    }
+    
+    .chatbot-container {
+      height: 400px;
+    }
+  }
+
+:root{
+  --main-color: #BE3D2A;
+  --second-color: #ff9b50;
+  --text-color: black;
+  --bg-color: #ff9b50; 
+  
+  --box-shadow: 2px 2px 10px 4px rgb(14 55 54 / 15%);
+}
+section {
+  padding: 50px 100px;
+}
+img {
+  width: 50%;
+}
+body{
+    color: var(--text-color); 
+}
+header{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 100px;
+  transition: 0.5s linear;
+
+}
+header.hidden {
+  top: -100px;
+}
+header.shadow{
+  background: linear-gradient(390deg, #F39E60, #E16A54);
+  box-shadow: var(--box-shadow);
+}
+
+/* Color changes when header has shadow class (after scrolling) */
+header.shadow .navbar a {
+  color: white;
+}
+
+header.shadow .navbar a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+header.shadow .bxs-user-circle {
+  color: white;
+}
+
+header.shadow .bxs-user-circle:hover {
+  color: #FFF1D5;
+}
+.logo img{
+  width: 100px;
+}
+.navbar{
+  display: flex;
+}
+.navbar a{
+  padding: 5px 10px;
+  color: var(--main-color);
+  font-size: 1rem;
+  font-weight: 500;
+}
+.navbar a:hover{
+  background: var(--second-color);
+  border-radius: 25px;
+  transition: 0.2s all linear; 
+}
+
+/* Combined user hover card styles */
+.profile-dropdown {
+  position: relative;
+}
+
+.bxs-user-circle {
+  font-size: 40px; 
+  color: var(--main-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.bxs-user-circle:hover {
+  color: #ff7043;
+}
+
+/* User hover card that includes both info and logout */
+.user-hover-card {
+  visibility: hidden;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 230px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  padding: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.profile-dropdown:hover .user-hover-card {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.user-hover-card::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: 15px;
+  border-width: 0 10px 10px 10px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+}
+
+.user-info-section {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-hover-card h4 {
+  color: var(--main-color);
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  padding-bottom: 5px;
+}
+
+.user-hover-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.user-hover-card strong {
+  font-weight: 600;
+  color: #555;
+}
+
+/* Logout button in hover card */
+.hover-logout {
+  display: block;
+  padding: 12px 15px;
+  background-color: white;
+  color: var(--main-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-weight: 500;
+  border-top: 1px solid #f5f5f5;
+}
+
+.hover-logout:hover {
+  background-color: var(--main-color);
+  color: white;
+}
+
+/* Hide the original dropdown when using hover functionality */
+.dropdown-menu {
+  display: none;
+}
+#menu-icon {
+  color: var(--main-color);
+  font-size: 24px;
+  z-index: 100001;
+  cursor: pointer;
+  display: none;
+}
+.home {
+  width: 100%;
+  min-height: 100vh;
+  background: beige;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 70px;
+  background: url("{{ url_for('static', filename='Img/bg1.png') }}");
+}
+.home-text h1 {
+  font-size: 120px;
+  font-weight: 800;
+  color: #BE3D2A;
+  letter-spacing: 1px;
+}
+.home-text p{
+  font-size: 1.1em;
+  color: black;
+  margin: 0.5rem 0 1.4rem;
+  text-align: justify;
+  width: 75%;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px 20px;
+  background: transparent;
+  border: 2px solid #f2d09c;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.btn i {
+  color: #BE3D2A;
+}
+.btn:hover {
+  background-color: #FFDCA9;
+}
+.map-box {
+  background-color: #BE3D2A;
+  height: 600px;
+  width: 100%;
+  max-width: 3000px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+html {
+  scroll-behavior: smooth;
+}
+.dashboard, .nea, .chat {
+  scroll-margin-top: 100px;
+}
+footer {
+  background-image: linear-gradient(-360deg, #f57150, #BE3D2A);
+  color: white;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+}
+.footer-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+.footer-col h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+.footer-col h4::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 2px;
+  background-color: #e25e3e;
+}
+.footer-col p {
+  text-align: justify;
+}
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+}
+.footer-col li {
+  margin-bottom: 0.75rem;
+}
+.footer-col a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-col a:hover {
+  color: #f9c784;
+}
+.bx {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+#weatherInfo {
+  background-color: #f0f8ff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+@media (max-width: 100%) {
+  .chatbot-section {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .chatbot-container, .chat-info {
+    width: 100%;
+  }
+  
+  .chatbot-container {
+    height: 400px;
+  }
+}
+
+@media (max-width:992px) {
+  header {
+    padding: 16px 60px;
+  }
+  section {
+    padding: 50px 60px;
+  }
+  .home-text h1 {
+    font-size: 60px;
+  }
+}
+@media (max-width:768px) {
+  header {
+    padding: 12px 4%;
+  }
+  section {
+    padding: 50px 4%;
+  }
+  #menu-icon {
+    display: initial;
+  }
+  .navbar {
+    position: absolute;
+    top: -570px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--second-color);
+    row-gap: 1.4rem;
+    padding: 20px;
+    transition: 0.3s;
+    text-align: center;
+  }
+  .navbar a {
+    color: var(--text-color);
+  }
+  .navbar a:hover {
+    color: var(--bg-color);
+  }
+  .navbar.active {
+    top: 100%;
+  }
+  .home-text h1 {
+    font-size: 40px;
+  }
+  .chat-text h1 {
+    font-size: 40px;
+    font-weight: 600;
+    color: #BE3D2A;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+  }
+}
+
+.chatbot-title {
+  width: 100%; /* forces it to take the full row */
+  font-size: 24px;
+  font-weight: bold;
+  color: #BE3D2A;
+  margin-bottom: 15px;
+}
+#changeAddressBtn {
+  background-color: #ff9b50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#changeAddressBtn:hover {
+  background-color: #e68a44; /* slightly darker for hover effect */
+}
+.search-panel {
+  background-color: white;
+  border-radius: 8px;
+  padding: 32px;
+  max-width: 1500px;
+  width: 100%; /* nearly full width */
+  margin: 30px auto; /* more spacing, centered */
+  margin-top: -12px;
+
+}
+  .search-panel h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+#changeAddressModal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Class to show the modal */
+#changeAddressModal.show {
+  display: flex;
+  opacity: 1;
+}
+
+#changeAddressModal .modal-content {
+  background: #fff;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+#changeAddressModal button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#changeAddressModal button[type="submit"] {
+  background-color: #fd784f;
+  color: white;
+}
+
+#changeAddressModal button[type="submit"]:hover {
+  background-color: #ff6f00;
+}
+
+#changeAddressModal button[type="button"] {
+  background-color: #000000;
+  color: white;
+}
+
+#changeAddressModal button[type="button"]:hover {
+  background-color: #5a6268;
+}.hidden{
+  display: none;
+}
+.filter-btn {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  margin-right: 5px;
+  color: #000;
+  border-radius: 10px;
+  user-select: none;
+}
+.filter-btn:hover {
+  background-color: #ff6f00;;
+}
+
+/* Highlight the selected label */
+input[name="location-source"]:checked + label {
+  background-color:#BE3D2A;
+  color: rgb(255, 255, 255);
+  border-color: #ff6f00;
+  border-radius: 40px;
+}
+ </style>
+</head>
+
+<body bgcolor="beige">
+   
+   
+  <header>
+    <a href="#" class="logo">
+        <img src="{{ url_for('static', filename='Img/logo.png') }}" class="logo">
+    </a>
+
+    <ul class="navbar">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#chatbot">Chatbot</a></li>
+        <li><a href="#nea">NEA</a></li>
+        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+        <li><a href="#about">About Us</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="profile-dropdown">
+        <i class='bx bxs-user-circle' id="dropdownToggle"></i>
+        
+        <!-- User hover card with info and logout button -->
+        <div class="user-hover-card">
+          <div class="user-info-section">
+            <h4>User Information</h4>
+            <p><strong>Name:</strong> {{ user_name }}</p>
+            <p><strong>Address:</strong> {{ user_address }}</p>
+          </div>
+          <a href="#" class="hover-logout" id="hoverLogoutBtn" onclick="return confirmLogout(event)">
+            <i class='bx bx-log-out'></i> Log Out
+        </a>
+        
+        <script>
+          function confirmLogout(event) {
+            if (confirm('Are you sure you want to log out?')) {
+              window.location.href = '/landing';
+            } else {
+              event.preventDefault(); // Stops the default link action
+            }
+          }
+        </script>
+        </div>
+      </div>
+    </div>
+
+    <div id="menu-icon" class="bx bx-menu"></div>
+</header>
+   
+    <!--Home-->
+    <section class="home" id="home">
+        <div class="home-text">
+            <h1>Welcome!</h1>
+            <p><strong>GABAY </strong>is an intelligent, user-focused emergency response platform built to support the people of Pasig City during critical situations such as <b> typhoons, floods, and fires</b>. Combining the power of real-time chatbot assistance, GPS-enabled location tracking, and a dynamic data dashboard, GABAY equips users with accurate information, nearby safe zones, and access to emergency hotlines—all in one place. With its intuitive design and community-centered approach, <strong>GABAY </strong>serves as a reliable digital companion in times of need, helping you stay informed, prepared, and protected.</p>
+        </div>
+        </section>
+
+ <!--chatbot-->   
+ <section id="chatbot" class="chatbot-section">
+  <div class="nea-text">
+    <h1>GABAY Chatbot</h1>
+    </div>
+  <div class="chatbot-container">
+    <div class="chat-header">
+      <i class="fas fa-robot"></i>
+      <h3>Gabay Disaster Assistant</h3>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <!-- Messages will appear here -->
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Type your message..." />
+      <button class="send-btn" id="sendButton">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="chat-info">
+    <h3>How Can I Help You?</h3>
+    <div class="info-item">
+      <h4><i class="fas fa-info-circle"></i> Ask About:</h4>
+      <div class="quick-actions">
+        <div class="quick-action" data-query="What should I do during a fire in Pasig City?">What to do during a fire?</div>
+        <div class="quick-action" data-query="Where are the evacuation centers in Pasig?">Find evacuation centers</div>
+        <div class="quick-action" data-query="What are the typhoon warning signals?">Typhoon warning signals</div>
+        <div class="quick-action" data-query="What are the emergency contact numbers?">Emergency contacts</div>
+      </div>
+    </div>
+    <div class="info-item">
+      <h4><i class="fas fa-cloud-sun-rain"></i> Weather:</h4>
+      <p id="weatherInfo">Loading weather info...</p>
+    </div>
+    <div class="info-item">
+      <h4><i class="fas fa-exclamation-triangle"></i> Current Alerts:</h4>
+      <p id="alertInfo">No active alerts for Pasig City at this time.</p>
+    </div>
+    <div class="info-item">
+      <h4><i class="fas fa-phone-alt"></i> Emergency Hotlines:</h4>
+      <p>
+        Pasig Command Center: <strong>8643-0000</strong><br>
+        Pasig Rescue: <strong>8643-0000</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="nea" class="nea">
+  <div class="nea-text"><h1 style="margin-bottom: 20px;">Nearest Evacuation Center</h1></div>
+  <div class="search-panel">
+    <div class="nea-text">
+      <h5>Find the closest safe zones and evacuation centers during emergencies. Enter your location to discover nearby evacuation areas in Pasig City.</h5>
+    </div>
+    
+    <div class="location-source-buttons">
+      <input type="radio" id="enter-address" name="location-source" checked hidden>
+      <label class="filter-btn active" for="enter-address">Enter address</label>
+    
+      <input type="radio" id="pin-location" name="location-source" hidden>
+      <label class="filter-btn" for="pin-location">Pin location on map</label>
+    
+      <input type="radio" id="home-address" name="location-source" value="{{ user_address }}" hidden onclick="fillAddress(this.value)">
+      <label class="filter-btn" for="home-address">Home Address</label>
+    </div>
+
+    <!-- Updated address input and button layout -->
+    <div class="address-container">
+      <button id="changeAddressBtn"><b>Update Address</b></button>
+      <div id="address-input-container">
+        <input type="text" id="address-input" placeholder="Enter address in Pasig City (e.g., Ortigas Avenue)">
+      </div>
+    </div>
+    
+    <!-- Find emergency button repositioned above map -->
+    <div class="find-emergency-container">
+      <button id="find-emergency-btn" class="find-btn">
+        <i class="fas fa-search-location"></i> Find Nearest Emergency Areas
+      </button>
+    </div>
+    
+    <!-- Map area -->
+    <div id="map"></div>
+   
+    
+    <!-- Existing filter controls -->
+    <div class="filter-controls">
+      <button class="filter-btn active" data-type="all">All Facilities</button>
+      <button class="filter-btn" data-type="hospital">Hospitals</button>
+      <button class="filter-btn" data-type="police">Police Stations</button>
+      <button class="filter-btn" data-type="fire">Fire Stations</button>
+      <button class="filter-btn" data-type="evacuation">Evacuation Sites</button>
+    </div>
+    
+    <div class="loading-indicator" id="loading-indicator">
+      <div class="loader"></div>
+      <p>Finding nearest emergency facilities...</p>
+    </div>
+  </div>
+
+  <!-- Modal for address update -->
+  <div id="changeAddressModal">
+    <div class="modal">
+      <div class="modal-content">
+        <h3>Change Address</h3>
+        <form id="addressForm">
+          <label for="newAddress">New Address:</label><br>
+          <input type="text" id="newAddress" name="newAddress" placeholder="Update new address" required 
+          style="width: 100%; margin: 0 auto;border: 1px solid #ccc; border-radius: 5px;height: 40px;margin: 5px;padding-left: 10px;"><br><br>
+          <button type="submit">Save</button>
+          <button type="button" onclick="closeModal()">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="results-container" class="hidden">
+    <h2>Nearest Emergency Facilities</h2>
+    
+    <div class="facility-category">
+      <h3><i class="fas fa-hospital"></i> Hospitals</h3>
+      <div id="hospitals-list" class="facility-list"></div>
+    </div>
+    
+    <div class="facility-category">
+      <h3><i class="fas fa-shield-alt"></i> Police Stations</h3>
+      <div id="police-list" class="facility-list"></div>
+    </div>
+    
+    <div class="facility-category">
+      <h3><i class="fas fa-fire-extinguisher"></i> Fire Stations</h3>
+      <div id="fire-list" class="facility-list"></div>
+    </div>
+    
+    <div class="facility-category">
+      <h3><i class="fas fa-running"></i> Evacuation Sites</h3>
+      <div id="evacuation-list" class="facility-list"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+          <div class="footer-col" id="about">
+              <h4>About Gabay</h4>
+              <p>Gabay is a disaster response and information system designed to help Pasig City residents during emergencies.</p>
+          </div>
+          <div class="footer-col">
+              <h4>Quick Links</h4>
+              <ul>
+                  <li><a href="#home">Home</a></li>
+                  <li><a href="#nea">NEA</a></li>
+                  <li><a href="#dashboard">Dashboard</a></li>
+                  <li><a href="#about">About Us</a></li>
+              </ul>
+          </div>
+          <div class="footer-col">
+              <h4>Contact Us</h4>
+              <ul>
+                  <li><i class='bx bx-map'></i>Pasig City, 1600</li>
+                  <li><i class='bx bx-phone'></i>(63) 9123 456 7890</li>
+                  <li><i class='bx bx-envelope'></i>gabay@example.com</li>
+              </ul>
+          </div>
+      </div>
+</footer>
+
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+
+<script>
+  document.querySelectorAll('input[name="location-source"]').forEach((radio) => {
+    radio.addEventListener('change', toggleLocationInput);
+  });
+  
+  function toggleLocationInput() {
+    const addressInputContainer = document.getElementById('address-input-container');
+    const addressInput = document.getElementById('address-input');
+    const isEnterAddress = document.getElementById('enter-address').checked;
+    const isHomeAddress = document.getElementById('home-address').checked;
+    const isPinLocation = document.getElementById('pin-location').checked;
+  
+    // Handle address input visibility and behavior
+    if (isEnterAddress) {
+        addressInputContainer.classList.remove('hidden');
+        addressInput.disabled = false;
+        addressInput.placeholder = "Enter a location in Pasig City (e.g., Ortigas Avenue)";
+        addressInput.value = "";
+        addressInput.focus();
+    } else if (isHomeAddress) {
+        addressInputContainer.classList.remove('hidden');
+        addressInput.disabled = true;
+        addressInput.placeholder = "Your home address (automatically filled)";
+        addressInput.value = document.getElementById('home-address').value;
+    } else if (isPinLocation) {
+        addressInputContainer.classList.add('hidden');
+        addressInput.disabled = false;
+        addressInput.value = "";
+    }
+  
+    const allFacilitiesBtn = document.querySelector('.filter-btn[data-type="all"]');
+  
+  // First, remove the active class from all filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  // Then add the active class to the "All Facilities" button
+  if (allFacilitiesBtn) {
+    allFacilitiesBtn.classList.add('active');
+    
+    // Also trigger the filtering function if it exists
+    if (typeof filterFacilities === 'function') {
+      filterFacilities('all');
+    }}
+  }
+</script>
+
+
+<script>
+ document.getElementById("changeAddressBtn").addEventListener("click", function () {
+  const modal = document.getElementById("changeAddressModal");
+  modal.style.display = "flex";
+  setTimeout(() => modal.classList.add("show"), 10); // allows CSS transition to kick in
+});
+
+function closeModal() {
+  const modal = document.getElementById("changeAddressModal");
+  modal.classList.remove("show");
+  setTimeout(() => modal.style.display = "none", 300); // wait for fade-out
+}
+
+  // Handle address form submission
+  document.getElementById("addressForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const newAddress = document.getElementById("newAddress").value;
+
+    fetch("/update_address", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ address: newAddress })
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      if (data.success) {
+        closeModal();
+        location.reload(); // Reload to update address on screen
+      }
+    })
+    .catch(err => console.error("Error:", err));
+  });
+</script>
+
+<script>
+    // Navbar hide on scroll down, show on scroll up
+    let lastScrollTop = 0;
+  const header = document.querySelector('header');
+  const logoImg = document.querySelector('.logo img');
+  const originalLogoSrc = logoImg.src; // Store the original logo path
+  const scrolledLogoSrc = "{{ url_for('static', filename='Img/logo-alt.png') }}";
+    
+  window.addEventListener('scroll', function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Add shadow class to header when scrolled
+    if (scrollTop > 0) {
+      header.classList.add('shadow');
+      logoImg.src = scrolledLogoSrc; // Change to alternate logo
+    } else {
+      header.classList.remove('shadow');
+      logoImg.src = originalLogoSrc; // Change back to original logo
+    }
+    
+    // Hide header on scroll down, show on scroll up
+    if (scrollTop > lastScrollTop && scrollTop > 100) {
+      // Scrolling down & past the 100px mark
+      header.classList.add('hidden');
+    } else {
+      // Scrolling up or at the top
+      header.classList.remove('hidden');
+    }
+    
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+  });
+  
+  // Mobile menu toggle
+  let navbar = document.querySelector('.navbar');
+  let menuIcon = document.querySelector('#menu-icon');
+  
+  menuIcon.onclick = () => {
+      navbar.classList.toggle('active');
+      menuIcon.classList.toggle('bx-x');
+  }
+  
+  // Close mobile menu when clicking anywhere else
+  window.onclick = (e) => {
+      if (!e.target.matches('#menu-icon') && !navbar.contains(e.target)) {
+          if (navbar.classList.contains('active')) {
+              menuIcon.classList.remove('bx-x');
+              navbar.classList.remove('active');
+          }
+      }
+  };
+  
+  // Add smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+              window.scrollTo({
+                  top: target.offsetTop - 80, // Adjust for header height
+                  behavior: 'smooth'
+              });
+              
+              // Close mobile menu after clicking a link
+              if (navbar.classList.contains('active')) {
+                  navbar.classList.remove('active');
+                  menuIcon.classList.remove('bx-x');
+              }
+          }
+      });
+  });
+
+  // User dropdown and hover card
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the logout button in the hover card
+    document.querySelectorAll('input[name="location-source"]').forEach((radio) => {
+  radio.addEventListener('change', () => {
+    document.querySelectorAll('.filter-btn').forEach((label) =>
+      label.classList.remove('active')
+    );
+    document.querySelector(`label[for="${radio.id}"]`).classList.add('active');
+    toggleLocationInput();
+  });
+});
+  });
+</script>
+
+<script>
+    function fillAddress() {
+    // Your address-filling logic here
+    console.log("Filling address...");
+  }
+</script>
+    
+
+<script src="{{ url_for('static', filename='chatbot.js') }}"></script>
+</body>
+</html>

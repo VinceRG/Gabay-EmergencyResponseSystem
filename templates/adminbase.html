@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Managemsent Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='adminbase.css') }}">
+</head>
+<body>
+
+    <header>
+        <div class="container header-container">
+            <h1>Disaster Management Administration</h1>
+            <!-- User hover card with info and logout button -->
+            
+            <div class="user-hover-card">
+                <a href="#" class="hover-logout" id="hoverLogoutBtn">Log Out</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Dashboard Tabs -->
+    <div class="container main-tabs-container">
+        <div class="main-tabs">
+            <a href="{{ url_for('fire_incidents') }}" class="main-tab-btn {% if active_module == 'fire' %}active{% endif %}">
+                Fire Incidents
+            </a>
+            <a href="{{ url_for('typhoon_incidents') }}" class="main-tab-btn {% if active_module == 'typhoon' %}active{% endif %}">
+                Typhoon/Cyclone Incidents
+            </a>
+            <a href="{{ url_for('emeloc') }}" class="main-tab-btn {% if active_module == 'emloc' %}active{% endif %}">
+                Emergency Locations
+            </a>
+        </div>
+    </div>
+    
+    <!-- Module Content -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Disaster Management System</p>
+        </div>
+    </footer>
+
+    <script>
+        // Get the logout button
+        const logoutBtn = document.getElementById('hoverLogoutBtn');
+        
+        // Add click event to the logout button
+        logoutBtn.addEventListener('click', function(event) {
+            // Always prevent the default action first
+            event.preventDefault();
+            
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to log out?')) {
+                // Only redirect if user confirms
+                window.location.href = '/landing';
+            }
+            // If user clicks Cancel, do nothing (stay on page)
+        });
+    </script>
+
+   
+</body>
+</html>

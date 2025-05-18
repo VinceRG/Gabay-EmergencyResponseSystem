@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='frontpage.css') }}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <title>GABAY</title>
+    
+</head>
+<body> 
+    <div class="full-page"></div>
+
+    <div class="container" id="container">
+        <!-- Sign-Up Form -->
+        <div class="form-container sign-up-container">
+            <form id="signupForm">
+                <h1>Create an account</h1>
+                <div class="name-container">
+                    <div class="infield">
+                        <input type="text" placeholder="First Name" name="firstName" required />
+                    </div>
+                    <div class="infield">
+                        <input type="text" placeholder="Last Name" name="lastName" required />
+                    </div>
+                </div>                
+                <div class="infield">
+                    <input type="email" placeholder="Email Address" name="email" required />
+                </div>
+                <div class="infield">
+                    <input type="text" placeholder="Address" name="address" required />
+                </div>
+                <div class="infield">
+                    <input type="text" placeholder="Phone Number" name="number" required />
+                </div>
+                <div class="password-container">
+                    <div class="infield">
+                        <input type="password" placeholder="Password" name="pw" required />
+                    </div>
+                    <div class="infield">
+                        <input type="password" placeholder="Confirm Password" name="cpw" required />
+                    </div>
+                </div>        
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+
+        <!-- Sign-In Form -->
+        <div class="form-container sign-in-container">
+            <form id="signinForm">
+                <h1>Sign in</h1>
+                <div class="infield">
+                    <input type="email" placeholder="Email" name="email" required style="padding-left: 37px;" />
+                    <i class='bx bx-envelope'></i>
+                </div>
+                <div class="infield">
+                    <input type="password" placeholder="Password" name="password" required style="padding-left: 37px;" />
+                    <i class='bx bx-lock-alt'></i>
+                </div>
+            <div class="inline-checkbox">
+                <input type="checkbox" id="showPassword" style="margin-right: 7px;">Show Password
+            </div>
+                <a href="{{ url_for('forgot_password') }}" class="forgot">Forgot your password?</a>
+               
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Overlay for Sign-Up/Sign-In Toggle -->
+        <div class="overlay-container" id="overlayCon">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome to Gabay!</h1>  
+                    <p>Sign up to start using GABAY.</p>
+                    <br><br>
+                    <p style="margin-top: 40px;">Already have an account?</p>
+                    <button id="signInBtn" style="margin-top: -10px;">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Welcome to Gabay!</h1>
+                    <p>Gabay is a website designed to assist users during disasters and emergencies by providing timely information and guidance.</p>
+                    <p>Don't have an account?</p>
+                    <button id="signUpBtn" style="margin-top: -7px;">Sign Up</button>
+                </div>
+            </div>
+            <button id="overlayBtn"></button>
+        </div>
+    </div>
+
+    <!-- JavaScript for Form Submission and Panel Toggle -->
+    <script>
+        const container = document.getElementById('container');
+        const overlayBtn = document.getElementById('overlayBtn');
+        const signUpBtn = document.getElementById('signUpBtn');
+        const signInBtn = document.getElementById('signInBtn');
+
+        overlayBtn.addEventListener('click', () => {
+            container.classList.toggle('right-panel-active');
+        });
+
+        signUpBtn.addEventListener('click', () => {
+            container.classList.add('right-panel-active');
+        });
+
+        signInBtn.addEventListener('click', () => {
+            container.classList.remove('right-panel-active');
+        });
+
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const passwordInput = this.querySelector('input[name="pw"]');
+            const confirmPasswordInput = this.querySelector('input[name="cpw"]');
+            const phoneInput = this.querySelector('input[name="number"]');
+
+            if (passwordInput.value.length < 8) {
+                alert("Password must be at least 8 characters long");
+                return;
+            }
+
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                alert("Passwords do not match");
+                return;
+            }
+
+            if (phoneInput.value.length !== 11) {
+                alert("Phone number must be 11 digits long");
+                return;
+            }
+
+            const formData = new FormData(this);
+
+            fetch("/signup", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    this.reset();
+                }
+            })
+            .catch(error => {
+                alert("An error occurred. Please try again.");
+                console.error("Error:", error);
+            });
+        });
+
+        document.getElementById("signinForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch("/signin", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            if (data.is_admin) {
+                // Redirect to admin page if admin login
+                window.location.href = "/admin";
+            } else {
+                // Regular user login redirects to chatbot
+                window.location.href = "/chatbot";
+            }
+        }
+    })
+    .catch(error => {
+        alert("An error occurred. Please try again.");
+        console.error("Error:", error);
+    });
+});
+            </script>
+            <script>
+    document.getElementById('showPassword').addEventListener('change', function () {
+        const passwordInput = document.querySelector('input[name="password"]');
+        passwordInput.type = this.checked ? 'text' : 'password';
+    });
+</script>
+</body>
+</html>

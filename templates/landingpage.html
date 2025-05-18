@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GABAY - Disaster Response System</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='landing_style.css') }}">
+    </head>
+    <body>
+        <div class="hero">
+            <nav>
+                <img src="{{ url_for('static', filename='Img/logo.png') }}" class="logo">
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                </ul>
+            </nav>
+            <div class="content">
+                <h1 class="anim">Your New Emergency Response System</h1>
+                <p class="anim">Get real-time assistance and critical information for fire, typhoon, and flood emergencies in Pasig City.</p>
+                <a href="{{ url_for('frontpage') }}" class="btn anim">Join us!</a>
+            </div>
+            <img src="{{ url_for('static', filename='Img/map.png') }}" class="map_img anim">
+        </div>
+        
+        <section id="features" class="info-section">
+            <div class="container">
+                <h2>GABAY Chatbot</h2>
+                <p>The <strong>GABAY Chatbot</strong> is a smart, real-time virtual assistant that provides guidance and emergency support during crises like typhoons, floods, or fires. It uses advanced Natural Language Processing (NLP) to understand and respond to user needs effectively</p>
+                <p><strong>Key Features:</strong></p>
+                <p>24/7 real-time emergency guidance</p>
+                <p>Context-aware replies based on disaster type</p>
+                <p>Quick access to emergency hotlines</p>
+                <p>Integrated alerts and disaster warnings</p>
+            </div>
+            
+            <div class="container">
+                <h2>Nearest Emergency Area (NEA)</h2>
+                <p>The <strong>Nearest Emergency Area (NEA)</strong> feature uses real-time GPS to help users locate the closest safe zones and emergency services.</p>
+                <p><strong>Key Features:</strong></p>
+                <p>Live location tracking with GPS</p>
+                <p>Shows evacuation centers, hospitals, police and fire stations</p>
+                <p>Interactive map with route suggestions</p>
+                <p>Dynamic updates based on changing hazards</p>
+            </div>
+            
+            <div class="container">
+                <h2>Dashboard</h2>
+                <p>This dynamic <strong>dashboard</strong> provides visual insights into typhoon, flooding, and fire-related incidents in Pasig City. It aids both public users and government agencies for better emergency response.</p>
+                <p><strong>Key Features:</strong></p>
+                <p>Visual reports: charts, graphs, and heatmaps</p>
+                <p>Real-time updates from verified sources</p>
+                <p>Filter by incident type, date, or barangay</p>
+                <p>Community-sourced reporting (with verification)</p>
+            </div>
+        </section>
+    </body>
+</html>

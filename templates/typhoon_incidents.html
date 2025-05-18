@@ -1,0 +1,237 @@
+{% extends "adminbase.html" %}
+
+{% block content %}
+<!-- Typhoon Module Content -->
+<div id="typhoonModule">
+    <!-- Add Form -->
+    <div id="typhoonFormContainer" class="form-container hidden">
+        <h2>Add Typhoon/Cyclone Incident</h2>
+        <form action="/typhoon/add" method="post">
+            <div class="form-group">
+                <label for="typhoonYear">Year:</label>
+                <select name="year" id="typhoonYear" required>
+                    {% for y in year_options %}
+                        <option value="{{ y.year }}">{{ y.year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="typhoonMonth">Month:</label>
+                <select name="month" id="typhoonMonth" required>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="typhoonFrequency">Frequency:</label>
+                <input type="number" name="cyclone_frequency" id="typhoonFrequency" value="1" min="0" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Save</button>
+                <button type="button" id="typhoonCancelBtn">Cancel</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Typhoon Incidents Filter -->
+    <div class="module-filters">
+        <select id="typhoonFilterYear">
+            <option value="">All Years</option>
+            {% for y in year_options %}
+                <option value="{{ y.year }}" {% if selected_year|string == y.year|string %}selected{% endif %}>{{ y.year }}</option>
+            {% endfor %}
+        </select>
+        <select id="typhoonFilterMonth">
+            <option value="">All Months</option>
+            <option value="January" {% if selected_month == "January" %}selected{% endif %}>January</option>
+            <option value="February" {% if selected_month == "February" %}selected{% endif %}>February</option>
+            <option value="March" {% if selected_month == "March" %}selected{% endif %}>March</option>
+            <option value="April" {% if selected_month == "April" %}selected{% endif %}>April</option>
+            <option value="May" {% if selected_month == "May" %}selected{% endif %}>May</option>
+            <option value="June" {% if selected_month == "June" %}selected{% endif %}>June</option>
+            <option value="July" {% if selected_month == "July" %}selected{% endif %}>July</option>
+            <option value="August" {% if selected_month == "August" %}selected{% endif %}>August</option>
+            <option value="September" {% if selected_month == "September" %}selected{% endif %}>September</option>
+            <option value="October" {% if selected_month == "October" %}selected{% endif %}>October</option>
+            <option value="November" {% if selected_month == "November" %}selected{% endif %}>November</option>
+            <option value="December" {% if selected_month == "December" %}selected{% endif %}>December</option>
+        </select>
+        <button id="typhoonLoadBtn">Filter</button>
+        <button id="typhoonAddNewBtn">Add New Cyclone</button>
+    </div>
+    
+    <!-- Typhoon Incidents Table -->
+    <div class="typhoon-table-container">
+        <table id="typhoonTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Year</th>
+                    <th>Month</th>
+                    <th>Cyclone Frequency</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in typhoon_data %}
+                <tr>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.year }}</td>
+                    <td>{{ row.month }}</td>
+                    <td>{{ row.cyclone_frequency }}</td>
+                    <td>
+                        <button class="action-btn edit-btn" data-id="{{ row.id }}">Edit</button>
+                        <button class="action-btn delete-btn" data-id="{{ row.id }}">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Edit Form -->
+    <div id="typhoonEditFormContainer" class="form-container hidden">
+        <h2>Edit Typhoon/Cyclone Incident</h2>
+        <form id="typhoonEditForm" action="/typhoon/update" method="post">
+            <input type="hidden" id="typhoonEditId" name="id">
+            <div class="form-group">
+                <label for="typhoonEditYear">Year:</label>
+                <select name="year" id="typhoonEditYear" required>
+                    {% for y in year_options %}
+                        <option value="{{ y.year }}">{{ y.year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="typhoonEditMonth">Month:</label>
+                <select name="month" id="typhoonEditMonth" required>
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="typhoonEditFrequency">Frequency:</label>
+                <input type="number" name="cyclone_frequency" id="typhoonEditFrequency" min="0" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit">Update</button>
+                <button type="button" id="typhoonEditCancelBtn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Reference to the typhoon-specific elements that actually exist
+        const typhoonTable = document.querySelector('.typhoon-table-container');
+        const moduleFilters = document.querySelector('.module-filters');
+        
+        // Show/hide add form
+        const addNewBtn = document.getElementById('typhoonAddNewBtn');
+        const formContainer = document.getElementById('typhoonFormContainer');
+        const cancelBtn = document.getElementById('typhoonCancelBtn');
+        
+        addNewBtn.addEventListener('click', function() {
+            // Hide the table and filters
+            typhoonTable.style.display = 'none';
+            moduleFilters.style.display = 'none';
+            
+            // Show the add form
+            formContainer.classList.remove('hidden');
+        });
+        
+        cancelBtn.addEventListener('click', function() {
+            // Hide the add form
+            formContainer.classList.add('hidden');
+            
+            // Show the table and filters again
+            typhoonTable.style.display = '';
+            moduleFilters.style.display = '';
+        });
+        
+        // Show/hide edit form
+        const editBtns = document.querySelectorAll('.edit-btn');
+        const editFormContainer = document.getElementById('typhoonEditFormContainer');
+        const editCancelBtn = document.getElementById('typhoonEditCancelBtn');
+        const editForm = document.getElementById('typhoonEditForm');
+        const editId = document.getElementById('typhoonEditId');
+        const editYear = document.getElementById('typhoonEditYear');
+        const editMonth = document.getElementById('typhoonEditMonth');
+        const editFrequency = document.getElementById('typhoonEditFrequency');
+        
+        editBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const row = this.closest('tr');
+                const year = row.cells[1].innerText;
+                const month = row.cells[2].innerText;
+                const frequency = row.cells[3].innerText;
+                
+                editId.value = id;
+                editYear.value = year;
+                editMonth.value = month;
+                editFrequency.value = frequency;
+                
+                // Hide the table and filters
+                typhoonTable.style.display = 'none';
+                moduleFilters.style.display = 'none';
+                
+                // Show the edit form
+                editFormContainer.classList.remove('hidden');
+            });
+        });
+        
+        editCancelBtn.addEventListener('click', function() {
+            // Hide the edit form
+            editFormContainer.classList.add('hidden');
+            
+            // Show the table and filters again
+            typhoonTable.style.display = '';
+            moduleFilters.style.display = '';
+        });
+        
+        // Delete confirmation
+        const deleteBtns = document.querySelectorAll('.delete-btn');
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('Are you sure you want to delete this record?')) {
+                    window.location.href = `/typhoon/delete/${id}`;
+                }
+            });
+        });
+        
+        // Filter functionality
+        const loadBtn = document.getElementById('typhoonLoadBtn');
+        const filterYear = document.getElementById('typhoonFilterYear');
+        const filterMonth = document.getElementById('typhoonFilterMonth');
+        
+        loadBtn.addEventListener('click', function() {
+            const year = filterYear.value;
+            const month = filterMonth.value;
+            window.location.href = `/typhoon?year=${year}&month=${month}`;
+        });
+    });
+    </script>
+{% endblock %}
