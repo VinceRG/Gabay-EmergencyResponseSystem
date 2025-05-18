@@ -133,3 +133,34 @@ html {
         transform: translateY(0px);
     }
 }
+@media (max-width: 768px) {
+    .map_img {
+        position: static;
+        margin: 2rem auto 0;
+        display: block;
+        width: 90%;
+        max-width: 350px;
+    }
+
+    .content h1 {
+        font-size: 36px;
+    }
+
+    .content p {
+        font-size: 14px;
+    }
+
+    .content .btn {
+        padding: 12px 40px;
+        font-size: 14px;
+    }
+
+    nav ul {
+        display: none; /* Optional: Hide nav links for small screens or replace with a menu */
+    }
+
+    .hero {
+        padding: 20px;
+        text-align: center;
+    }
+}
