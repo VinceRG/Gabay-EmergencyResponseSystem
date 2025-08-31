@@ -3,10 +3,574 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='frontpage.css') }}">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <title>GABAY</title>
-    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        :root {
+            --linear-grad: linear-gradient(to right, #e25e3e, #ff9b50);
+            --grad-clr1: #141E30;
+            --grad-clr2: #ff9b50;
+        }
+        .full-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('bgg.svg');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: -1; 
+        }
+
+        body{
+            min-height: 100vh;
+            display: flex;
+            background: #f6f5f7;
+            justify-content: center;        
+            align-items: center;
+            padding: 20px 0;
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                            url("{{ url_for('static', filename='Img/bg1.png') }}");
+            background-size: cover;
+            background-position: center;
+        }
+        .container{
+            position: relative;
+            width: 850px;
+            height: 500px;
+            background-color: #ffdcab;
+            box-shadow: 25px 30px 55px #5557;
+            border-radius: 20px;
+            overflow: hidden;
+            text-align: center;
+        }
+        .form-container{
+            position: absolute;
+            width: 60%;
+            height: 100%;
+            padding: 0px 15px;
+            transition: all 0.6s ease-in-out;
+        }
+        .sign-up-container{
+            opacity: 0;
+            z-index: 1;
+        }
+        .sign-in-container{
+            z-index: 2;
+        }
+        form{
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0px 50px;
+            text-align: center;
+        }
+
+        h1{
+            color: var(--grad-clr1);
+            margin-bottom: 10px;
+        }
+        .infield{
+            position: relative;
+            margin: 8px 0px;
+            width: 100%;
+        }
+        .infield i {
+            position: absolute;
+            align-items: center;
+            left: 3%;
+            top: 48%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #858484;
+            pointer-events: none;
+        }
+        input{
+            width: 100%;
+            padding: 12px;
+            padding-left: 12px;
+            background-color: #f3f3f3;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            text-align: left;
+        }
+        label{
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            transform: translateX(-50%);
+            width: 0%;
+            height: 2px;
+            background: var(--linear-grad);
+            transition: 0.3s;
+        }
+        input:focus ~ label{
+            width: 100%;
+        }
+        
+        a{
+            color: #333;
+            font-size: 14px;
+            text-decoration: none;
+            margin: 15px 0px;
+        }
+        a.forgot{
+            padding-bottom: 3px;
+            border-bottom: 2px solid #e25e3e;
+        }
+        button{
+            border-radius: 20px;
+            border: 1px solid var(--grad-clr1);
+            background: var(--grad-clr2);
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 12px 45px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .form-container button{
+            margin-top: 17px;
+            transition: 80ms ease-in;
+        }
+        .form-container button:hover {
+            background: #ffbb5c;
+            color: var(--grad-clr1);
+        }
+        .overlay-container{
+            position: absolute;
+            top: 0;
+            left: 60%;
+            width: 40%;
+            height: 100%;
+            overflow: hidden;
+            transition: transform 0.6s ease-in-out;
+            z-index: 9;
+        }
+        #overlayBtn{
+            cursor: pointer;
+            position: absolute;
+            left: 50%;
+            top: 370px;
+            transform: translateX(-50%);
+            width: 143.67px;
+            height: 40px;
+            border: 1px solid #fff;
+            background: transparent;
+            border-radius: 20px;
+        }
+        .overlay{
+            position: relative;
+            background: var(--linear-grad);
+            color: #fff;
+            left: -150%;
+            height: 100%;
+            width: 250%;
+            transition: transform 0.6s ease-in-out;
+        }
+        .overlay-panel{
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0px 40px;
+            text-align: center;
+            height: 100%;
+            width: 340px;
+            transition: 0.6s ease-in-out;
+        }
+        .overlay-left{
+            right: 60%;
+            transform: translateX(-12%);
+        }
+        .overlay-right{
+            right: 0;
+            transform: translateX(0%);
+        }
+        .overlay-panel h1{
+            color: #c63d2f;
+        }
+        .name-container {
+            display: flex;
+            gap: 10px; 
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .name-container .infield {
+            flex: 1; 
+        }
+        .password-container {
+            display: flex;
+            gap: 10px; 
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .password-container .infield {
+            flex: 1; 
+        }
+        p{
+            font-size: 14px;
+            font-weight: 300;
+            line-height: 20px;
+            letter-spacing: 0.5px;
+            margin: 25px 0px 15px;
+        }
+        .overlay-panel button{
+            border: none;
+            background-color: transparent;
+            width: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px auto;
+            margin-top: 55px;
+        }
+        .right-panel-active .overlay-container{
+            transform: translateX(-150%);
+        }
+        .right-panel-active .overlay{
+            transform: translateX(50%);
+        }
+        .right-panel-active .overlay-left{
+            transform: translateX(25%);
+        }
+        .right-panel-active .overlay-right{
+            transform: translateX(35%);
+        }
+        .right-panel-active .sign-in-container{
+            transform: translateX(20%);
+            opacity: 0;
+        }
+        .right-panel-active .sign-up-container{
+            transform: translateX(66.7%);
+            opacity: 1;
+            z-index: 5;
+            animation: show 0.6s;
+        }
+        @keyframes show{
+            0%, 50%{
+                opacity: 0;
+                z-index: 1;
+            }
+            50.1%, 100%{
+                opacity: 1;
+                z-index: 5;
+            }
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 900px) {
+            .container {
+                max-width: 700px;
+            }
+            
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                width: 100%;
+                max-width: 500px;
+                height: auto;
+                min-height: 850px;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            /* Fix the form container structure */
+            .form-container {
+                position: relative;
+                width: 100%;
+                height: auto;
+                min-height: 450px;
+                padding: 20px 30px;
+                transform: none !important;
+            }
+            
+            /* Handle sign-in and sign-up containers display for mobile */
+            .sign-in-container, .sign-up-container {
+                position: absolute;
+                top: 450px; /* Position below the overlay */
+                left: 0;
+                width: 100%;
+                height: auto;
+                opacity: 1;
+            }
+            .sign-in-container{
+                padding-top: 200px;
+            }   
+            
+            .sign-up-container {
+                display: flex; /* Ensure full visibility */
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 600px; /* Increased minimum height */
+                overflow: visible; /* Allow content to be fully visible */
+                padding-top: 75px;
+                padding-left: 45px;
+            }
+            .sign-up-container form {
+                width: 100%; /* Full width */
+                max-width: 400px; /* Maximum width to prevent stretching */
+                padding: 0 20px; /* Added horizontal padding */
+            }
+            /* Fix the overlay container */
+            .overlay-container {
+                position: relative;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 250px;
+                z-index: 10;
+                transform: none !important;
+                margin-bottom: 0;
+            }
+            
+            .overlay {
+                position: relative;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100%;
+                transform: none !important;
+                padding-top: 15px;
+            }
+
+            p{
+                font-size: 13px;
+            }
+            
+            /* Fix the overlay panels */
+            .overlay-panel {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                padding: 20px;
+                transform: none !important;
+            }
+            
+            /* Set initial states for panels */
+            .overlay-left {
+                display: none;
+                margin-right: -300px;
+                margin-top: -10px;
+
+            }
+            
+            .overlay-right {
+                display: block;
+            }
+            
+            /* Position the button properly */
+            #overlayBtn {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                top: auto;
+                transform: translateX(-50%);
+            }
+            
+            /* Form adjustments */
+            form {
+                padding: 0 20px;
+            }
+            
+            /* Special handling for the right-panel-active state */
+            .right-panel-active .sign-up-container {
+                display: block;
+            }
+            
+            .right-panel-active .sign-in-container {
+                display: none;
+            }
+            
+            .right-panel-active .overlay-left {
+                display: block;
+            }
+            
+            .right-panel-active .overlay-right {
+                display: none;
+            }
+            
+            /* Name and password containers */
+            .name-container,
+            .password-container {
+                flex-direction: column;
+                gap: 0;
+                width: 100%;
+            }
+
+            /* Reset button styles for mobile */
+            .overlay-panel button {
+                width: auto;
+                margin: 5px auto;
+            }
+            
+        }
+
+        @media screen and (max-width: 576px) {
+            .container {
+                width: 100%;
+                border-radius: 10px;
+                min-height: 800px;
+            }
+            
+            form {
+                padding: 0 15px;
+            }
+            
+            /* Form element adjustments */
+            .infield {
+                margin: 5px 0;
+            }
+            
+            /* Typography adjustments */
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            p {
+                font-size: 12px;
+                margin: 10px 0;
+            }
+            
+            /* Input and button adjustments */
+            input {
+                padding: 10px;
+            }
+            
+            button {
+                padding: 10px 25px;
+                font-size: 11px;
+            }
+            
+            /* Overlay container adjustments */
+            .overlay-container {
+                height: 230px;
+                padding-top: -10px;
+            }
+            .overlay-left{
+                margin-right: -300px;
+                margin-top: -10px;
+            }
+            
+            .overlay-panel {
+                padding: 15px;
+            }
+            p{
+                padding: 3px;
+            }
+            #HeaderWelcome{
+                margin-top: 0px;
+            }
+            #HeaderWelcomeUp{
+                margin-top: -9px;
+            }
+        }
+
+        /* Fix for very small screens */
+        @media screen and (max-height: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                min-height: 550px;
+            }
+            
+            form {
+                padding: 15px 10px;
+            }
+            
+            .overlay-container {
+                height: 230px;
+            }
+           
+        }
+
+               @media screen and (max-width: 360px) {
+            #HeaderWelcome{
+                margin-top: 0px;
+            }
+            #HeaderWelcomeUp{
+                margin-top: -15px;
+            }
+        } 
+
+        @media screen and (min-width: 769px) and (max-width: 900px) {
+            .overlay-right {
+                padding-left: 90px;
+                box-sizing: border-box;
+            }
+            .overlay-left {
+                padding-left: 80px; /* Adjust this value as needed */
+                box-sizing: border-box; /* Ensure padding works well within width */
+            }
+            p{
+                font-size: 12px;
+            }
+        #Signupbtn{
+            margin-top: 35px;
+            }
+        }
+        @media screen and (max-width: 525px) {
+        .overlay-left {
+            width: 100% !important;      /* Make overlay-left full width */
+            right: 0 !important;         /* Reset right position */
+            transform: none !important;  /* Reset any transforms */
+            margin: 0 !important;        /* Remove negative margin */
+            padding: 20px;               /* Add padding for content spacing */
+            box-sizing: border-box;      /* Include padding in width */
+            text-align: center;          /* Center text */
+        }
+         #Signupbtn{
+            margin-top: -8px;
+            }
+       #HeaderWelcomeUp{
+                margin-top: -20px;
+            }
+         #HeaderWelcome{
+                margin-top: -20px;
+            }
+        #Signinbtn{
+            margin-top: 5px;
+            }
+        }.inline-checkbox {
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: flex-start; /* 👈 THIS forces it to align to the left in a centered flex column */
+  margin-top: 10px; /* Optional spacing */
+  margin-right: 100px;
+  margin-left: 10px;
+}
+
+.inline-checkbox label {
+  margin-left: 5px;
+}
+
+        
+    </style>
 </head>
 <body> 
     <div class="full-page"></div>
@@ -50,11 +614,11 @@
             <form id="signinForm">
                 <h1>Sign in</h1>
                 <div class="infield">
-                    <input type="email" placeholder="Email" name="email" required style="padding-left: 37px;" />
+                    <input type="email" placeholder="Email" name="email" required style="padding-left: 40px;" />
                     <i class='bx bx-envelope'></i>
                 </div>
                 <div class="infield">
-                    <input type="password" placeholder="Password" name="password" required style="padding-left: 37px;" />
+                    <input type="password" placeholder="Password" name="password" required style="padding-left: 40px;" />
                     <i class='bx bx-lock-alt'></i>
                 </div>
             <div class="inline-checkbox">
@@ -70,17 +634,18 @@
         <div class="overlay-container" id="overlayCon">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
-                    <h1>Welcome to Gabay!</h1>  
-                    <p>Sign up to start using GABAY.</p>
-                    <br><br>
-                    <p style="margin-top: 40px;">Already have an account?</p>
-                    <button id="signInBtn" style="margin-top: -10px;">Sign In</button>
+                    <h1 id="HeaderWelcome" style="margin-bottom: 10px;">Welcome to Gabay!</h1>
+                    <p style="margin-top: -5px;">Join Gabay for disaster preparedness and emergency guidance. Sign up now.</p>
+                    <p style="margin-bottom: 5px;">
+                        Already have an account?
+                    </p>
+                    <button id="Signinbtn">Sign In</button>
                 </div>
                 <div class="overlay-panel overlay-right">
-                    <h1>Welcome to Gabay!</h1>
-                    <p>Gabay is a website designed to assist users during disasters and emergencies by providing timely information and guidance.</p>
-                    <p>Don't have an account?</p>
-                    <button id="signUpBtn" style="margin-top: -7px;">Sign Up</button>
+                        <h1 id="HeaderWelcomeUp">Welcome to Gabay!</h1>
+                        <p style="margin-top: -5px;">Gabay is a website designed to assist users during disasters and emergencies by providing timely information and guidance.</p>
+                        <p style="margin-top: -2px;">Don't have an account?</p>
+                        <button id="Signupbtn">Sign Up</button>
                 </div>
             </div>
             <button id="overlayBtn"></button>
@@ -89,23 +654,6 @@
 
     <!-- JavaScript for Form Submission and Panel Toggle -->
     <script>
-        const container = document.getElementById('container');
-        const overlayBtn = document.getElementById('overlayBtn');
-        const signUpBtn = document.getElementById('signUpBtn');
-        const signInBtn = document.getElementById('signInBtn');
-
-        overlayBtn.addEventListener('click', () => {
-            container.classList.toggle('right-panel-active');
-        });
-
-        signUpBtn.addEventListener('click', () => {
-            container.classList.add('right-panel-active');
-        });
-
-        signInBtn.addEventListener('click', () => {
-            container.classList.remove('right-panel-active');
-        });
-
         document.getElementById("signupForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
@@ -181,5 +729,104 @@
         passwordInput.type = this.checked ? 'text' : 'password';
     });
 </script>
+<script>
+       // Get DOM elements
+       const container = document.getElementById('container');
+       const overlayCon = document.getElementById('overlayCon');
+       const overlayBtn = document.getElementById('overlayBtn');
+       const signInButton = document.querySelector('.overlay-right button');
+       const signUpButton = document.querySelector('.overlay-left button');
+       const signInContainer = document.querySelector('.sign-in-container');
+       const signUpContainer = document.querySelector('.sign-up-container');
+       const overlayLeft = document.querySelector('.overlay-left');
+       const overlayRight = document.querySelector('.overlay-right');
+
+       // Add event listeners for the buttons
+       overlayBtn.addEventListener('click', togglePanel);
+       signInButton.addEventListener('click', togglePanel);
+       signUpButton.addEventListener('click', togglePanel);
+
+       // Add event listener for window resize
+       window.addEventListener('resize', checkScreenSize);
+
+       // Initial check on page load
+       document.addEventListener('DOMContentLoaded', function() {
+           checkScreenSize();
+       });
+
+       function checkScreenSize() {
+           if (window.innerWidth <= 768) {
+               // Mobile view handling
+               setupMobileLayout();
+               updateMobileView();
+           } else {
+               // Reset styles for larger screens
+               resetDesktopView();
+           }
+       }
+
+       // Function to set up mobile layout initially
+       function setupMobileLayout() {
+           // Ensure the overlay container is at the top
+           if (container.firstChild !== overlayCon) {
+               container.insertBefore(overlayCon, container.firstChild);
+           }
+           
+           // Set fixed positions for forms
+           signInContainer.style.position = 'absolute';
+           signUpContainer.style.position = 'absolute';
+           signInContainer.style.top = '200px';
+           signUpContainer.style.top = '200px';
+           
+           // Ensure overlay is visible
+           overlayCon.style.display = 'block';
+       }
+
+       function updateMobileView() {
+           if (container.classList.contains('right-panel-active')) {
+               // Show sign-up form, hide sign-in form
+               signUpContainer.style.display = 'block';
+               signInContainer.style.display = 'none';
+               
+               // Show left panel, hide right panel
+               overlayLeft.style.display = 'flex';
+               overlayRight.style.display = 'none';
+           } else {
+               // Show sign-in form, hide sign-up form
+               signUpContainer.style.display = 'none';
+               signInContainer.style.display = 'block';
+               
+               // Show right panel, hide left panel
+               overlayLeft.style.display = 'none';
+               overlayRight.style.display = 'flex';
+           }
+       }
+
+       function resetDesktopView() {
+           // Reset form displays and positions
+           signInContainer.style.display = '';
+           signUpContainer.style.display = '';
+           signInContainer.style.position = '';
+           signUpContainer.style.position = '';
+           signInContainer.style.top = '';
+           signUpContainer.style.top = '';
+           
+           // Reset overlay panels
+           overlayLeft.style.display = '';
+           overlayRight.style.display = '';
+           
+           // Reset container structure
+           overlayCon.style.display = '';
+           overlayCon.style.position = '';
+       }
+
+       function togglePanel() {
+           container.classList.toggle('right-panel-active');
+           
+           if (window.innerWidth <= 768) {
+               updateMobileView();
+           }
+       }
+    </script>
 </body>
 </html>

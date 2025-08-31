@@ -568,6 +568,9 @@ footer {
   .navbar.active {
     top: 100%;
   }
+  .home {
+    background-repeat: no-repeat  ;
+  }
   .home-text h1 {
     font-size: 40px;
   }
@@ -693,6 +696,16 @@ input[name="location-source"]:checked + label {
   color: rgb(255, 255, 255);
   border-color: #ff6f00;
   border-radius: 40px;
+}.location-source-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  justify-content: flex-start; /* Aligns content to the left */
+}@media (max-width: 600px) {
+  .location-source-buttons {
+    justify-content: center;
+  }
 }
  </style>
 </head>

@@ -55,6 +55,7 @@
 
 #address-input {
   width: 100%;
+  min-width: 300px;
   padding: 12px 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -127,7 +128,7 @@
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 15px;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .hidden {

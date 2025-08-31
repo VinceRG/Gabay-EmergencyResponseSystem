@@ -223,6 +223,14 @@ function addRecord() {
     data[key] = value;
   }
 
+  const lat = parseFloat(data.latitude);
+  const lng = parseFloat(data.longitude);
+
+  if (!isWithinPasig(lat, lng)) {
+    alert('Coordinates are outside of Pasig City. Please enter a valid location within Pasig.');
+    return;
+  }
+}
   fetch(`/api/${currentTable}`, {
     method: 'POST',
     headers: {
@@ -230,23 +238,6 @@ function addRecord() {
     },
     body: JSON.stringify(data)
   })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(result => {
-      alert(result.message);
-      document.getElementById('addForm').reset();
-      hideAddForm();
-      loadData();
-    })
-    .catch(error => {
-      console.error('Error adding record:', error);
-      alert('Error adding record. Please try again.');
-    });
-}
 
 // Function to update a record
 function updateRecord() {

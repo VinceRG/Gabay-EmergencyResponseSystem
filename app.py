@@ -1299,7 +1299,7 @@ def typhoon_incidents():
                           year_options=year_options,
                           selected_year=selected_year,
                           selected_month=selected_month,
-                          active_module='typhoon')
+                          active_module='typhoon' )
 
 @app.route('/typhoon/add', methods=['POST'])
 def typhoon_add():

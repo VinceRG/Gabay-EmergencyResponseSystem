@@ -674,69 +674,71 @@ const EmergencyDashboard = () => {
              </div>
             
             {/* Tabs navigation */}
-            <div className="flex justify-between items-center mb-6 border-b-2 border-blue-600 pb-2">
-                <div className="flex gap-4">  
-                <button
-                        onClick={() => handleTabChange('flooding')}
-                        data-tab="flooding"
-                        className={`tab-button px-4 py-2 font-medium text-sm rounded-t-lg flex items-center border-b-1 ${
-                            activeTab === 'flooding'
-                                ? 'border-blue-400 text-blue-700 bg-blue-100'
-                                : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                        }`}
-                    >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7c3-2 6 2 9 0s6-2 9 0"/>
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12c3-2 6 2 9 0s6-2 9 0"/>
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 17c3-2 6 2 9 0s6-2 9 0"/>
-                        </svg>
-                        Flooding
-                    </button>
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 border-b-2 border-blue-600 pb-2 space-y-4 md:space-y-0">
+    <div className="flex flex-col md:flex-row gap-2 md:gap-4">
+        <button
+            onClick={() => handleTabChange('flooding')}
+            data-tab="flooding"
+            className={`tab-button px-4 py-2 font-medium text-sm rounded-t-lg flex items-center border-b-1 ${
+                activeTab === 'flooding'
+                    ? 'border-blue-400 text-blue-700 bg-blue-100'
+                    : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+            }`}
+        >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7c3-2 6 2 9 0s6-2 9 0" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12c3-2 6 2 9 0s6-2 9 0" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 17c3-2 6 2 9 0s6-2 9 0" />
+            </svg>
+            Flooding
+        </button>
 
-                    <button
-                        onClick={() => handleTabChange('fire')}
-                        data-tab="fire"
-                        className={`tab-button px-4 py-2 font-medium text-sm rounded-t-lg flex items-center border-b-1 ${
-                            activeTab === 'fire'
-                                ? 'border-orange-400 text-orange-700 bg-orange-100'
-                                : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                        }`}
-                    >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
-                        </svg>
-                        Fire
-                    </button>
-                    <button
-                        onClick={() => handleTabChange('typhoon')}
-                        data-tab="typhoon"
-                        className={`tab-button px-4 py-2 font-medium text-sm rounded-t-lg flex items-center border-b-1 ${
-                            activeTab === 'typhoon'
-                                 ? 'border-yellow-400 text-yellow-700 bg-yellow-100'
-                                : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                        }`}
-                    >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
-                        </svg>
-                        Typhoon
-                    </button>
-                </div>
-                
-                <div className="dashboard-actions">
-                    <label htmlFor="year-selector" className="font-medium text-gray-700 mr-2">Select Year: </label>
-                    <select 
-                        id="year-selector" 
-                        className="year-select"
-                        value={selectedYear}
-                        onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                    >
-                        {years.map(year => (
-                            <option key={year} value={year}>{year}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
+        <button
+            onClick={() => handleTabChange('fire')}
+            data-tab="fire"
+            className={`tab-button px-4 py-2 font-medium text-sm rounded-t-lg flex items-center border-b-1 ${
+                activeTab === 'fire'
+                    ? 'border-orange-400 text-orange-700 bg-orange-100'
+                    : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+            }`}
+        >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+            </svg>
+            Fire
+        </button>
+
+        <button
+            onClick={() => handleTabChange('typhoon')}
+            data-tab="typhoon"
+            className={`tab-button px-4 py-2 font-medium text-sm rounded-t-lg flex items-center border-b-1 ${
+                activeTab === 'typhoon'
+                    ? 'border-yellow-400 text-yellow-700 bg-yellow-100'
+                    : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+            }`}
+        >
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+            </svg>
+            Typhoon
+        </button>
+    </div>
+
+    <div className="dashboard-actions flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-2">
+        <label htmlFor="year-selector" className="font-medium text-gray-700">Select Year:</label>
+        <select 
+            id="year-selector" 
+            className="year-select border border-gray-300 rounded px-2 py-1"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+        >
+            {years.map(year => (
+                <option key={year} value={year}>{year}</option>
+            ))}
+        </select>
+    </div>
+</div>
+
 
             {/* Flooding tab content with the DailyFloodForecast component */}
             {activeTab === 'flooding' && (
